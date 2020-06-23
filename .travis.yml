@@ -23,15 +23,13 @@ jobs:
         # code repo and the wiki repo.
         - cd ..
 
-        # Clone repositories
+        # Clone the wiki repository
         - git clone https://github.com/${GITHUB_ORG}/${WIKI_REPO}.git
 
         # Update wiki repository with documentation folder contents
-        #- yes | cp -rf ${REPO}/${WIKI_FOLDER}/* ${WIKI_REPO}/
         - rsync -av --exclude=.git --delete ${REPO}/${WIKI_FOLDER}/ ${WIKI_REPO}/
-        - cd ${WIKI_REPO}
 
-        # Terminate Travis CI build when no changes detected
+        - cd ${WIKI_REPO}
         - |
           if git diff-index --quiet HEAD && [ ! -n "$(git status -s)" ]; then 
             echo "nothing to do"
