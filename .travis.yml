@@ -36,13 +36,13 @@ jobs:
         # Terminate Travis CI build when no changes detected
         - |
           if git diff-index --quiet HEAD && [ ! -n "$(git status -s)" ]; then 
-            set +e 
-            pkill -9 -P $$ &> /dev/null || true 
-            exit 0
+            echo "nothing to do"
           else 
             git config user.email ${EMAIL}
             git config user.name ${USER}
-            git commit -a -m "${REPO} wiki update | Travis CI build number $TRAVIS_BUILD_NUMBER"
+            git add --all
+            git status
+            git commit -m "${REPO} wiki update | Travis CI build number $TRAVIS_BUILD_NUMBER"
             git remote add origin-wiki "https://${USER}:${GITHUB_TOKEN}@github.com/${GITHUB_ORG}/${WIKI_REPO}.git"
             git push origin-wiki master
           fi
