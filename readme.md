@@ -59,21 +59,14 @@ jobs:
         # Update wiki repository with documentation folder contents.
         - rsync -av --exclude=.git --delete ${REPO}/${WIKI_FOLDER}/ ${WIKI_REPO}/
 
-        # Move intot he wiki repo so we can tell if there are any changes.
+        # Commit and push changes into the wiki repo
         - cd ${WIKI_REPO}
-
         - |
-          if git diff-index --quiet HEAD && [ ! -n "$(git status -s)" ]; then
-            echo "nothing to do"
-          else
-            git config user.email ${EMAIL}
-            git config user.name ${USER}
-            git add --all
-            git status
-            git commit -m "${REPO} wiki update | Travis CI build number $TRAVIS_BUILD_NUMBER"
-            git remote add origin-wiki "https://${USER}:${GITHUB_TOKEN}@github.com/${GITHUB_ORG}/${WIKI_REPO}.g
-            git push origin-wiki master
-          fi
-
-
+          git config user.email ${EMAIL}
+          git config user.name ${USER}
+          git add --all
+          git status
+          git commit -m "${REPO} wiki update | Travis CI build number $TRAVIS_BUILD_NUMBER"
+          git remote add origin-wiki "https://${USER}:${GITHUB_TOKEN}@github.com/${GITHUB_ORG}/${WIKI_REPO}.g
+          git push origin-wiki master
 ```
