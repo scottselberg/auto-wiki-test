@@ -1,7 +1,9 @@
 # the GITHUB_TOKEN is a personal access token created in github
 # then created as a custom environment variable for the repo in Travis-CI
 
-language: none
+language: perl
+perl:
+  - "5.30"
 os: linux
 dist: trusty
 env:
@@ -27,7 +29,8 @@ jobs:
         - git clone https://github.com/${GITHUB_ORG}/${WIKI_REPO}.git
 
         # Update wiki repository with documentation folder contents
-        - yes | cp -rf ${REPO}/${WIKI_FOLDER}/* ${WIKI_REPO}/
+        #- yes | cp -rf ${REPO}/${WIKI_FOLDER}/* ${WIKI_REPO}/
+        - yes | rsync --exclude=.git ${REPO}/${WIKI_FOLDER}/ ${WIKI_REPO}/
         - cd ${WIKI_REPO}
 
         # Terminate Travis CI build when no changes detected
