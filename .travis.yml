@@ -1,16 +1,17 @@
-language: perl
-perl:
-  - "5.30"
+# the GITHUB_TOKEN is a personal access token created in github
+# then created as a custom environment variable for the repo in Travis-CI
+
+language: none
 os: linux
 dist: trusty
 env:
   global:
-    - ORG="scottselberg"
+    - GITHUB_ORG="scottselberg"
     - EMAIL="saselberg2@gmail.com"
     - REPO="auto-wiki-test"
     - WIKI_REPO="${REPO}.wiki"
     - WIKI_FOLDER="wiki"
-    - GH_WIKI_URL="github.com/${ORG}/${WIKI_REPO}.git"
+install: skip
 stages:
   - name: WikiUpdate
 jobs:
@@ -23,7 +24,7 @@ jobs:
         - cd ..
 
         # Clone repositories
-        - git clone https://github.com/${ORG}/${WIKI_REPO}.git
+        - git clone https://github.com/${GITHUB_ORG}/${WIKI_REPO}.git
 
         # Update wiki repository with documentation folder contents
         - yes | cp -rf ${REPO}/${WIKI_FOLDER}/* ${WIKI_REPO}/
@@ -38,10 +39,7 @@ jobs:
           else 
             git config user.email ${EMAIL}
             git config user.name ${USER}
-            git status
-            git add .
-            git status
-            git commit  -m "${REPO} wiki update | Travis CI build number $TRAVIS_BUILD_NUMBER"
-            git remote add origin-wiki "https://${USER}:${GITHUB_TOKEN}@github.com/${ORG}/${WIKI_REPO}.git"
+            git commit -a -m "${REPO} wiki update | Travis CI build number $TRAVIS_BUILD_NUMBER"
+            git remote add origin-wiki "https://${USER}:${GITHUB_TOKEN}@github.com/${GITHUB_ORG}/${WIKI_REPO}.git"
             git push origin-wiki master
           fi
