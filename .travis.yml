@@ -30,7 +30,7 @@ jobs:
 
         # Update wiki repository with documentation folder contents
         #- yes | cp -rf ${REPO}/${WIKI_FOLDER}/* ${WIKI_REPO}/
-        - rsync --exclude=.git ${REPO}/${WIKI_FOLDER}/ ${WIKI_REPO}/
+        - rsync -av --exclude=.git ${REPO}/${WIKI_FOLDER}/ ${WIKI_REPO}/
         - cd ${WIKI_REPO}
 
         # Terminate Travis CI build when no changes detected
