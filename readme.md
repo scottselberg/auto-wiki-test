@@ -29,9 +29,14 @@ GITHUB_TOKEN variable.  This is not automatic.  You need to login into github an
 create a personal authentication token with write access to the repo.  Then in your
 travis-ci repository settings, you setup the GITHUB_TOKEN environment variable.
 
+I chose the version of perl, 5.24, as the build machine info reported by Travis CI
+indicated that it was pre-installed so there would be no need to installing something
+to speed up the build.
 
 ```yaml
 language: perl
+perl:
+  - "5.24"
 os: linux
 dist: trusty
 env:
