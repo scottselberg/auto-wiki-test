@@ -42,6 +42,6 @@ jobs:
             git add .
             git status
             git commit  -m "${REPO} wiki update | Travis CI build number $TRAVIS_BUILD_NUMBER"
-            git remote add origin-wiki "https://${USER}:${GITHUB_TOKEN}@${WIKI_REPO}"
+            git remote add origin-wiki "https://${USER}:${GITHUB_TOKEN}@github.com/${ORG}/${WIKI_REPO}.git"
             git push origin-wiki master
           fi
