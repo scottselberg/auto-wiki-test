@@ -2,8 +2,6 @@
 # then created as a custom environment variable for the repo in Travis-CI
 
 language: perl
-perl:
-  - "5.30"
 os: linux
 dist: trusty
 env:
