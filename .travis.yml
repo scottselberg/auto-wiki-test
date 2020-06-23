@@ -11,8 +11,6 @@ env:
     - WIKI_REPO="${REPO}.wiki"
     - WIKI_FOLDER="wiki"
     - GH_WIKI_URL="github.com/${ORG}/${WIKI_REPO}.git"
-install: skip
-script: skip
 stages:
   - name: WikiUpdate
 jobs:
@@ -41,8 +39,9 @@ jobs:
             git config user.email ${EMAIL}
             git config user.name ${USER}
             git status
-            git add --all 
-            git commit -m "${REPO} wiki update | Travis CI build number $TRAVIS_BUILD_NUMBER"
+            git add .
+            git status
+            git commit  -m "${REPO} wiki update | Travis CI build number $TRAVIS_BUILD_NUMBER"
             git remote add origin-wiki "https://${USER}:${GITHUB_TOKEN}@${GH_REPO_DEST}"
             git push origin-wiki master
           fi
