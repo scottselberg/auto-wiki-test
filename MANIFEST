@@ -1,7 +1,8 @@
 .travis.yml
 autoWikiTest.pl
 lib/Selberg/AutoWikiTest.pm
+Makefile.PL
+MakeManifest.PL
 MANIFEST			This list of files
-prep.pl
 wiki/Home.md
 wiki/TestPage.md
