@@ -1,0 +1,44 @@
+language: perl
+dist: trusty
+sudo: false
+env:
+  global:
+    - ORG="scottselberg"
+    - EMAIL="saselberg2@gmail.com"
+    - REPO="auto-wiki-test"
+    - WIKI_REPO="${REPO}.wiki"
+    - WIKI_FOLDER="wiki"
+    - GH_WIKI_URL="github.com/${ORG}/${WIKI_REPO}.git"
+stages:
+  - name: WikiUpdate
+jobs:
+  include:
+    - stage: WikiUpdate
+      if: (branch = master) AND (type = push)
+      script:
+        # Move up one layer so we can see both the source
+        # code repo and the wiki repo.
+        - cd ..
+
+        # Clone repositories
+        - git clone https://github.com/${ORG}/${WIKI_REPO}.git
+
+        # Update wiki repository with documentation folder contents
+        - yes | cp -rf ${REPO}/${WIKI_FOLDER}/* ${WIKI_REPO}/
+        - cd ${WIKI_REPO}
+
+        # Terminate Travis CI build when no changes detected
+        - |
+          if git diff-index --quiet HEAD && [ ! -n "$(git status -s)" ]; then 
+            set +e 
+            pkill -9 -P $$ &> /dev/null || true 
+            exit 0
+          else 
+            git config user.email ${EMAIL}
+            git config user.name ${USER}
+            git status
+            git add --all 
+            git commit -m "${REPO} wiki update | Travis CI build number $TRAVIS_BUILD_NUMBER"
+            git remote add origin-wiki "https://${USER}:${GITHUB_TOKEN}@${GH_REPO_DEST}"
+            git push origin-wiki master
+          fi
